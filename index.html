@@ -1,0 +1,473 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Kotlin</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+                <section>
+                    <h1>Kotlin</h1>
+                </section>
+                <section>
+					<section>
+						<h2>Kotlin has some benefits over plain Java</h2>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### No Semicolons
+
+							```
+							val someData = "some data"
+							val data = someData.subString(5)
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Native Java Support
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Properties
+
+							```
+							var age: Int = 34
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Readonly
+
+							```
+							val name: String = "Tim"
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Type Interference
+
+							```
+							val whatAmI = "Tim" // type is String
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Method Expressions
+
+							```
+							return if (age > 18) "adult" else "teenager"
+
+							fun sign() = println("signed")
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Final Per Default
+
+							```
+							class ThisClassIsFinal {}
+							open class FromThisClassCanBeDerived {}
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### NULL Safety
+
+							```
+							var a: String = "abc"
+							a = null // compilation error
+
+							var b: String? = "abc"
+							b = null // ok
+
+							b?.length
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### String Templates
+
+							```
+							val name = "Tim"
+							println("My name is $name")
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Data Classes
+
+							- equals()/hashCode() pair
+							- toString() "User(name=Tim, age=34)
+							- copy() with override function
+
+							```
+							data class User(val name:String, var id:Int)
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Coroutines
+
+							```
+							val c = AtomicInteger()
+							for (i in 1..1_000_000)
+								launch {
+									c.addAndGet(i)
+								}
+
+							println(c.get())
+							```
+
+							[A tutorial for Kotlins coroutines](https://kotlinlang.org/docs/tutorials/coroutines-basic-jvm.html)
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### There is more ...
+							[Kotlin Docs](https://kotlinlang.org/docs/reference/comparison-to-java.html)
+						</textarea>
+					</section>
+                </section>
+				<section>
+					<section data-markdown>
+						<textarea data-template>
+							## Less Ceremonial Code
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Property Initialisation and Standard Constructor
+
+							Reduce the code noise and make the code more readable.
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### Java
+
+							__12__ lines of code
+
+							```
+							public class SimpleClass {
+								private String someProperty;
+
+								public void setSomeProperty(String someProperty) {
+									this.someProperty = someProperty;
+								}
+
+								public String getSomeProperty() {
+									return this.someProperty;
+								}
+
+								public SimpleClass(String someProperty) {
+									this.someProperty = someProperty;
+								}
+							}
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### C# #
+
+							__6__ lines of code
+
+							```
+							public class SimpleClass {
+								public string SomeProperty { get; set; }
+
+								SimpleClass(string someProperty) {
+									SomeProperty = someProperty;
+								}
+							}
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Kotlin
+
+							__1__ line of code
+
+							```
+							class SimpleClass(var someProperty: String) {}
+
+							```
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						<textarea data-template>
+							## Main Tasks in Kotlin
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Functions
+
+							```
+							fun min(val a: Int, val b: Int): Int {
+								return if (a < b) a else b
+							}
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Object Instantiations
+
+							```
+							val myInstance = This_is_a_class()
+							```
+						</textarea>
+					</section>
+					<section>
+						<img src="img/23xfq0.jpg">
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### How does Kotlin deals with static than
+
+							```
+							class Providers {
+								companion object {
+									fun getProviders() : List< Provider> {
+										// singleton code here
+									}
+
+									@JvmStatic
+									fun main(args:Array< String>) {
+									//....
+									}
+								}
+							}
+
+							//...
+							val allProviders = Provider.getProviders()
+							//...
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Something about Classes
+
+							Classes have some functions per default
+
+							```
+							class TestClass {
+								init {
+									// Some init code here
+									// will be called after the ctor
+								}
+							}
+
+							// valid but don't use this
+							class TestClass2 {
+								constructor(name:String) {
+									this.name = name
+								}
+							}
+
+							// use default ctors
+							class TestClass2(var name:String) {
+							}
+
+							// or provide a default value
+							class TestClass2(var name:String = "Tim") {
+							}
+
+							```
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						<textarea data-template>
+							## Data Classes
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Create Data Classes
+
+							```
+							data class User(val name:String, var age:Int)
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Deconstruct Data Classes with ComponentN()
+
+							```
+							val tim = User("Tim", 24)
+							val (name, age) = tim
+
+							data class Result(val result: Int, val status: Status)
+							fun function(...): Result {
+								// computations
+								return Result(result, status)
+							}
+
+							// Now, to use this function:
+							val (result, status) = function(...)
+							```
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						<textarea data-template>
+							## Functional Programming
+
+							```
+							fn: {String, String} --> Unit
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							In Kotlin the last parameter can be passed as a function.
+
+							```
+							func main(args: Array< String>) {
+								getAllProviders{
+									key, value -> println("\t$key: $value")
+								}
+							}
+
+							fun getAllProviders(fn: (String, String) -> Unit) {
+								//...
+								provider.forEach {
+									key, value ->
+										fn(key.toString(), value.toString())
+								}
+							}
+							```
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						<textarea data-template>
+							## Testing in Kotlin
+
+							- JUnit5
+							- Spek (Spock Groovy)
+							- Hamkrest
+							- Mockito Kotlin
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Testing with Spek
+
+							```
+							class CalculatorSpek : Spek({
+								val result: Result = mock()
+								val calculator = Calculator(result)
+
+								describe("the calculator") {
+
+									beforeEachTest {
+										calculator = Calculator(NullResult())
+									}
+
+									it("should add two numbers") {
+										var result = calculator?.add(12, 14)
+										Assertions.assertEquals(26, result)
+										assert.that(result, equalTo(26))
+									}
+								}
+							})
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### Testing with Spek and Mock
+
+							```
+							class CalculatorSpek : Spek({
+								val result: Result = mock()
+								val calculator = Calculator(result)
+
+								describe("the calculator") {
+
+									beforeEachTest {
+										calculator = Calculator(NullResult())
+									}
+
+									it("should write the p=output amount") {
+										calculator.accumulate(23)
+										verify(result).write(23)
+									}
+								}
+							})
+							```
+						</textarea>
+					</section>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						## Next?
+
+						There is a lot more in Kotlin.
+
+						Check out the the documentation on [kotlinlang.org](https://kotlinlang.org/docs/reference/).
+
+						Other [popular frameworks](https://kotlinlang.org/docs/resources.html) for Kotlin.
+
+					</textarea>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
