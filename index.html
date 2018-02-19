@@ -214,8 +214,8 @@
 						</section>
 					</section>
 					<section>
-							<h2>Next: Networking simple</h2>
-						</section>
+						<h2>Next: Networking simple</h2>
+					</section>
 				</section>
 				<section>
 					<section>
@@ -274,17 +274,21 @@
 						<p class="fragment">persist data even when a container is deleted</p>
 						<p class="fragment">move data between container</p>
 						<p class="fragment">hold your db data</p>
+						<p class="fragment">Next: docker-compose</p>
 					</section>
 				</section>
 				<section>
 					<section>
 						<h2>Docker Compose</h2>
+						<img src="img/docker-compose.png">
 						<p class="fragment">a YAML description</p>
 						<p class="fragment">blueprint for some services</p>
 					</section>
 					<section data-markdown>
 						<section data-template>
 							## Wordpress Demo
+
+							docker-compose.yml
 
 							```
 							version: '3.3'
@@ -314,6 +318,18 @@
 								WORDPRESS_DB_PASSWORD: wordpress
 							volumes:
 								dbdata:
+							```
+						</section>
+					</section>
+					<section data-markdown>
+						<section data-template>
+							## docker-compose CLI
+
+							```
+							#> docker-compose up -d
+							#> docker-compose logs -f
+							#> docker-compose ports
+							#> docker-compose down
 							```
 						</section>
 					</section>
