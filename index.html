@@ -230,9 +230,32 @@
 						<p class="fragment">Next: Volumes</p>
 					</section>
 				</section>
+				<section>
+					<section>
+						<h2>Volumes</h2>
+						<p>where your data live</p>
+						<p>reusable</p>
+						<p>moving between container</p>
+					</section>
+					<section data-markdown>
+						<section data-template>
+							## Volume
 
-<!-- Here comes the Volumes Section -->
-
+							```
+							#> docker volume --help
+							#> docker volume create dbdata
+							#> docker volume inspect dbdata
+							#> docker run -it -v dbdata:/data alpine sh
+							```
+						</section>
+					</section>
+					<section>
+						<h2>Volumes will:</h2>
+						<p class="fragment">persist data even when a container is deleted</p>
+						<p class="fragment">move data between container</p>
+						<p class="fragment">hold your db data</p>
+					</section>
+				</section>
 				<section>
 					<section>
 						<h2>Docker Compose</h2>
