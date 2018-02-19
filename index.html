@@ -95,17 +95,9 @@
 							<p>first container</p>
 						</div>
 					</section>
-					<section data-markdown>
-						<textarea data-template>
-							## interacting with the docker daemon
-							
-							```
-							#> docker --help
-							#> docker container ps
-							#> docker images
-							#> docker container run -it alpine:latest sh
-							```
-						</textarea>
+					<section>
+						<h2>from Image to Container</h2>
+						<img src="img/imageToContainer.png">
 					</section>
 					<section data-markdown>
 						<textarea data-template>
@@ -194,8 +186,36 @@
 						<p class="fragment">Dockerfile contains the blueprint</p>
 						<p class="fragment">images are immutable</p>
 						<p class="fragment">container are based on images</p>
-						<p class="fragment">Next: Networking simple</p>
 					</section>
+					<section>
+						<img src="img/docker-container-life.png" height="400px">
+					</section>
+					<section>
+						<h2>Next: docker-machine</h2>
+					</section>
+					<section>
+						<img src="img/docker-machine.png">
+					</section>
+					<section data-markdown>
+						<section data-template>
+							## a new VM
+
+							```
+							#> docker-machine ls
+							#> docker-machine create -d virtualbox MyVM
+							#> docker-machine ls
+							#> eval (docker-machine env)
+							#> ## a Tenschion: Hipster Tim uses fish
+							#> docker ps
+							#> env | grep DOCKER
+							#> set -e ...
+							#bash unset ${!DOCKER_*}
+							```
+						</section>
+					</section>
+					<section>
+							<h2>Next: Networking simple</h2>
+						</section>
 				</section>
 				<section>
 					<section>
