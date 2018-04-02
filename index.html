@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Docker Jumpstart</title>
+		<title>Docker Jumpstart D2</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css">
@@ -25,326 +25,345 @@
 		<div class="reveal">
 			<div class="slides">
                 <section>
-                    <h1>Docker Jumpstart</h1>
-                </section>
-                <section>
-					<section>
-						<h2>What is Docker</h2>
-						<p class="fragment">lightweight virtualization</p>
-						<p class="fragment">don't think in processes</p>
-						<p class="fragment">think in individual container</p>
-						<p class="fragment">hight level of abstraction</p>
-						<p class="fragment">de facto standard for container</p>
-					</section>
-					<section>
-						<h2>Abstraction (Linux)</h2>
-						<p class="fragment">libvirt</p>
-						<p class="fragment">LXC</p>
-						<p class="fragment">systemd-nspawn</p>
-						<p class="fragment">or libcontainer since v0.9 </p>
-					</section>
-					<section>
-						<h2>Container</h2>
-						<p class="fragment">self contained program</p>
-						<p class="fragment">standard "box"</p>
-						<p class="fragment">based on a blueprint -> Image</p>
-					</section>
-					<section>
-						<h2>Image</h2>
-						<p class="fragment">blueprint of a container</p>
-						<p class="fragment">immutable</p>
-					</section>
-					<section>
-						<h2>Repository</h2>
-						<p class="fragment">Standard Docker Hub [hub.docker.com](https://hub.docker.com/)</p>
-						<p class="fragment">private repos like Nexus</p>
-					</section>
-					<section>
-						<h2>Container</h2>
-						<img src="img/Container-Structure.png">
-					</section>
-					<section>
-						<h2>Comparison VM and Container</h2>
-						<table>
-							<tr>
-								<td style="vertical-align:bottom;" class="fragment">
-									<h4>Host with VMs</h4>
-									<img src="img/StandardServerWithVms.png">
-								</td>
-								<td style="vertical-align:bottom;" class="fragment">
-									<h4>Host with Container</h4>
-									<img src="img/ServerWithContainer.png">
-								</td>
-							</tr>
-						</table>
-					</section>
-					<section>
-						<h2>Start</h2>
-						<p class="fragment">Server and Client [getDocker](https://www.docker.com/community-edition#/download)</p>
-						<p class="fragment">the client interacts with any server</p>
-						<p class="fragment">Docker comes with some tools</p>
-					</section>
+					<h1>Docker Jumpstart D2</h1>
+					<p>Deep Dive</p>
 				</section>
 				<section>
 					<section>
-						<h2>Hands On</h2>
+						<h2>Overview</h2>
+						<ul>
+							<li class="fragment">Quick Recap</li>
+							<li class="fragment">Loggin</li>
+							<li class="fragment">Swarm</li>
+							<li class="fragment">Networking</li>
+							<li class="fragment">Secrets</li>
+							<li class="fragment">Stacks and Services</li>
+						</ul>
+					</section>
+				</section>
+                <section>
+					<section>
+						<h2>Quick Recap</h2>
+					</section>
+					<section data-markdown>
+							<textarea data-template>
+								## Starting and Stopping
+
+								```
+								#> docker container run -it alpine sh
+								#> docker container ps
+								#> docker container stop >ID<
+								Ctrl+p Ctrl+q
+								```
+							</textarea>
+					</section>
+					<section data-markdown>
+							<textarea data-template>
+								## Executing a command
+
+								```
+								#> docker container exec >ID< >CMD<
+								```
+							</textarea>
+					</section>
+					<section>
+						<h2>CMD vs. ENTRYPOINT</h2>
+						<p class="fragment">both are defined in the Dockerfile</p>
+						<p class="fragment">CMD can be overriden on container creation</p>
+						<p class="fragment">argument will be appended to the ENTRYPOINT</p>
+					</section>
+					<section data-markdown>
+							<textarea data-template>
+								## Port and IP-Address
+
+								```
+								#> docker port >CONTAINER-NAME<
+								#> docker inspect -f "{{ .NetworkSettings.Network.bridge.IPAddress }}" >CONTAINER-NAME<
+								```
+							</textarea>
+					</section>
+				</section>
+
+
+				<section>
+					<section>
+						<h2>Logging</h2>
+					</section>
+					<section>
+						<h2>Linux</h2>
 						<div class="fragment">
-							<p>the docker cli</p>
-							<p>the docker-machine cli</p>
-							<p>basic docker commands</p>
-							<p>manage your first container</p>
+							<lu>
+								<li>systemd</li>
+								<li>/var/log/messages</li>
+							</lu>
 						</div>
 					</section>
 					<section>
-						<h2>from Image to Container</h2>
-						<img src="img/imageToContainer.png">
-					</section>
-					<section data-markdown>
-						<textarea data-template>
-							## interacting with the docker daemon
-							
-							```
-							#> docker --help
-							#> docker container ps
-							#> docker images
-							#> docker container run -it alpine:latest sh
-							```
-						</textarea>
-					</section>
-					<section data-markdown>
-						<textarea data-template>
-							## the container command can be omit 
-							
-							```
-							#> docker ps
-							#> docker run -it alpine:latest sh
-							```
-						</textarea>
-					</section>
-					<section data-markdown>
-						<textarea data-template>
-							## the Docker run command 
-							
-							```
-							#> docker run --help
-							#> docker run -it -d -p 8080:80 nginx
-							#> docker run debian:latest *OVERRIDE STANDARD COMMAND*
-							#> docker stop *ID or container name*
-							```
-						</textarea>
-					</section>
-					<section data-markdown>
-						<textarea data-template>
-							## inside  container
-
-							```
-							#> docker run -it alpine
-							$> ls /
-							$> ps
-							Ctrl+p Ctrl+q
-							#> docker ps
-							#> docker attach *ID or container name*
-							$> exit
-							#> docker ps -a
-							```
-						</textarea>
+						<h2>Windows</h2>
+						<div class="fragment">
+							<lu>
+								<li>~\AppData\local\Docker</li>
+							</lu>
+						</div>
 					</section>
 					<section>
-						<h2>How to create an image</h2>
-						<p class="fragment">Dockerfile</p>
-						<p class="fragment">build</p>
-						<p class="fragment">ready to use</p>
-					</section>
-					<section data-markdown>
-						<textarea data-template>
-							## the Dockerfile
-
-							```
-							FROM debian:9
-
-							MAINTAINER timklug@mail.mail
-							RUN apt-get update
-							RUN apt-get install figlet -y
-
-							CMD ["figlet","docker rocks!"]
-							```
-						</textarea>
-					</section>
-					<section data-markdown>
-						<textarea data-template>
-							## start the engine
-
-							```
-							#> docker build -t demo .
-							#> docker run demo
-							```
-						</textarea>
-					</section>
-					<section>
-						<h2>Recap</h2>
-						<p class="fragment">the docker client CLI interacts with the daemon</p>
-						<p class="fragment">Dockerfile contains the blueprint</p>
-						<p class="fragment">images are immutable</p>
-						<p class="fragment">container are based on images</p>
-					</section>
-					<section>
-						<img src="https://camo.githubusercontent.com/439d0ad6ea1a65694cfc66c537b6b22e1ae1fd01/68747470733a2f2f646f63732e646f636b65722e636f6d2f6d616368696e652f696d672f6c6f676f2e706e67" height="400px">
-					</section>
-					<section>
-						<h2>Next: docker-machine</h2>
+						<h2>STDOUT and STDERR</h2>
+						<ul>
+							<li>App must run as process 1</li>
+							<li>infrastructure grab information</li>
+						</ul>
 					</section>
 				</section>
+				
+				
 				<section>
 					<section>
-						<h2>docker-machine</h2>
-						<img src="img/docker-machine.png">
-					</section>
-					<section data-markdown>
-						<section data-template>
-							## a new VM
-
-							```
-							#> docker-machine ls
-							#> docker-machine create -d virtualbox MyVM
-							#> docker-machine ls
-							#> eval (docker-machine env)
-							#> ## a Tenschion: Hipster Tim uses fish
-							#> docker ps
-							#> env | grep DOCKER
-							#> set -e ...
-							#bash unset ${!DOCKER_*}
-							```
-						</section>
+						<h2>Docker Swarm</h2>
 					</section>
 					<section>
-						<h2>Next: Networking simple</h2>
+						<ul>
+							<li class="fragment">the HEART of the furtur</li>
+							<li class="fragment">orchestration will be swapped with K8s</li>
+							<li class="fragment">Swarm provides the secure cluster</li>
+							<li class="fragment">the cluster handels all encryption</li>
+							<li class="fragment">provides the secure store</li>
+						</ul>
+						<p class="fragment">check out <a href="https://github.com/docker/swarmkit">GitHub Docker Swarmkit</a></p>
+					</section>
+					<section>
+						<h2>Single-Engine Mode</h2>
+						<p>manage container individually</p>
+					</section>
+					<section>
+						<h2>Swarm Mode</h2>
+						<p>manage container in a cluster</p>
+					</section>
+					<section>
+						<h2>Creation</h2>
+						<p>The fist manager is the __Leader__. It will be the root CA for the complete cluster.</p>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## Swarm CLI
+							
+							```
+							#> docker swarm init
+							#> docker swarm init --external-ca
+							```
+						</textarea>
+					</section>
+					<section>
+						<h2>the init will create</h2>
+						<ul>
+							<li class="fragment">a secure cluster store __etc__</li>
+							<li class="fragment">a root CA</li>
+							<li class="fragment">Manager token</li>
+							<li class="fragment">Worker token</li>
+							<li class="fragment">the first manager is the Leader</li>
+						</ul>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## add node to the cluster
+							
+							```
+							#> docker swarm join --token >TOKEN<
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## receive the token
+							
+							```
+							#> docker swarm join-token manger
+							#> docker swarm join-token worker
+
+							// renew the token
+							#> docker swarm join-tolen --rotate worker
+							```
+						</textarea>
+					</section>
+					<section>
+						<h2>on adding</h2>
+						<ul>
+							<li class="fragment">the Leader issues a new certificate</li>
+							<li class="fragment">all incomming commands forwarded to the Leader</li>
+							<li class="fragment">on fail of the Leader a new will be selected</li>
+							<li class="fragment">for HA use, 3, 5 or 7</li>
+							<li class="fragment">Linux and Windows Worker can be mixed</li>
+						</ul>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## CLI commands
+							
+							```
+							#> docker node --help
+							#> docker service --help
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## Lockdown the swarm
+							
+							```
+							#> docker swarm update --autolock=true
+							```
+						</textarea>
 					</section>
 				</section>
 				<section>
 					<section>
 						<h2>Networking</h2>
-						<p class="fragment">simple bridges</p>
-						<p class="fragment">overlay networks (advanced)</p>
-						<p class="fragment">MACVlan & IPVlan (advanced)</p>
+					</section>
+					<section>
+						<h2>Bridge NAT</h2>
+
+						<ul>
+							<li class="fragment">default, switch like</li>
+							<li class="fragment">Bridges are isolated</li>
+						</ul>
 					</section>
 					<section data-markdown>
 						<textarea data-template>
-							## Bridges
-
+							## creating  Bridge
+							
 							```
-							#> docker network ls
-							#> docker network create --help
-							#> docker network create -d bridge bridgelan
-							#> docker run -dit --name pong --network bridgelan alpine sleep 1d
-							#> docker run -it --name ping --network bridgelan alpine sh
+							#> docker network create -d bridge bridge-name
+							#> docker container run -d --network bridge-name alpine sleep 1h
 							```
 						</textarea>
 					</section>
 					<section>
-						<h2>Advanced Networking</h2>
-						<p>These topics might be covered in the advanced session:</p>
-						<p>overlay network</p>
-						<p>MACVlan & IPVlan</p>
+						<h2>Overlay Network</h2>
+
+						<ul>
+							<li class="fragment">scope to the swarm</li>
+							<li class="fragment">combine all nodes</li>
+							<li class="fragment">encryption with a single command</li>
+							<li class="fragment">docker uses the ports</li>
+							<ul>
+								<li>4789 (UDP)</li>
+								<li>7946 (TCP/UDP)</li>
+								<li>2377 (TCP)</li>
+							</ul>
+						</ul>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## creating the network
+							
+							```
+							#> docker network create -d overlay network-name
+							#> docker network create -o encryption
+							#> docker service create -d --name myApp /
+								--replicas 2 /
+								--network network-name /
+								alpine sleep 1h
+							#> docker service ls
+							#> docker service ps myApp
+							```
+						</textarea>
 					</section>
 					<section>
-						<h2>Recap</h2>
-						<p class="fragment">plug container to a switch</p>
-						<p class="fragment">DNS service out of the box</p>
-						<p class="fragment">Next: Volumes</p>
+						<h2>Ingress Network</h2>
+
+						<p>Access any service from any node.</p>
+					</section>
+					<section>
+						<h2>Load Balancing</h2>
+
+						<p>DNS load balancing</p>
+					</section>
+					<section>
+						<h2>MACVLAN</h2>
+
+						<ul>
+							<li class="fragment">transparent on Windows</li>
+							<li class="fragment">attach to a existing VLAN</li>
+							<li class="fragment">only with promiscuous mode card</li>
+						</ul>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## creating the network
+							
+							```
+							#> docker network create -d macvlan network-name
+							#> docker service create -d --name myApp /
+								--replicas 2 /
+								--network network-name /
+								alpine sleep 1h
+							#> docker service ls
+							#> docker service ps myApp
+							```
+
+							[post on blog.docker.com](https://blog.docker.com/2016/12/understanding-docker-networking-drivers-use-cases/)
+						</textarea>
+					</section>
+					<section>
+						<h2>IPVLAN</h2>
+
+						<ul>
+							<li class="fragment">experimental</li>
+							<li class="fragment">will work without promiscuous mode</li>
+						</ul>
 					</section>
 				</section>
 				<section>
 					<section>
-						<h2>Volumes</h2>
-						<p class="fragment">where your data live</p>
-						<p class="fragment">reusable</p>
-						<p class="fragment">moving between container</p>
-					</section>
-					<section data-markdown>
-						<section data-template>
-							## Volume
-
-							```
-							#> docker volume --help
-							#> docker volume create dbdata
-							#> docker volume inspect dbdata
-							#> docker run -it -v dbdata:/data alpine sh
-							```
-						</section>
+						<h2>Secrets</h2>
 					</section>
 					<section>
-						<h2>Volumes will:</h2>
-						<p class="fragment">persist data even when a container is deleted</p>
-						<p class="fragment">move data between container</p>
-						<p class="fragment">hold your db data</p>
-						<p class="fragment">Next: docker-compose</p>
+						<ul>
+							<li>sensitive data inside a container</li>
+							<li>needs Swarm Mode and services</li>
+							<li>a service need explicit access to a secret</li>
+							<li>managers only serves secure data to worker that runs a replica</li>
+							<ul>
+								<li>Linux: /run/secrets/</li>
+								<li>Windows: C:\ProgramData\Docker\Secrets\</li>
+							</ul>
+							<li>on Linux the secret will be stored in an in memory file system</li>
+							<li>on Windows they will be persist on disk</li>
+						</ul>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## create a secret
+							
+							```
+							#> docker secret create secretFile ./secretData
+							#> docker secret ls
+							#> docker service create --secret secretFile ...
+							```
+						</textarea>
 					</section>
 				</section>
 				<section>
 					<section>
-						<h2>Docker Compose</h2>
-						<img src="https://github.com/docker/compose/raw/master/logo.png?raw=true">
-						<p class="fragment">a YAML description</p>
-						<p class="fragment">blueprint for some services</p>
+						<h2>Stack and Services</h2>
 					</section>
-					<section data-markdown>
-						<section data-template>
-							## Wordpress Demo
-
-							docker-compose.yml
-
-							```
-							version: '3.3'
-
-							services:
-							db:
-								image: mysql:5.7
-								volumes:
-								- dbdata:/var/lib/mysql
-								restart: always
-								environment:
-								MYSQL_ROOT_PASSWORD: somewordpress
-								MYSQL_DATABASE: wordpress
-								MYSQL_USER: wordpress
-								MYSQL_PASSWORD: wordpress
-
-							wordpress:
-								depends_on:
-								- db
-								image: wordpress:latest
-								ports:
-								- "8000:80"
-								restart: always
-								environment:
-								WORDPRESS_DB_HOST: db:3306
-								WORDPRESS_DB_USER: wordpress
-								WORDPRESS_DB_PASSWORD: wordpress
-							volumes:
-								dbdata:
-							```
-						</section>
-					</section>
-					<section data-markdown>
-						<section data-template>
-							## docker-compose CLI
-
-							```
-							#> docker-compose up -d
-							#> docker-compose logs -f
-							#> docker-compose ports
-							#> docker-compose down
-							```
-						</section>
-					</section>
-				</section>
-				<section>
 					<section>
-						<h2>That's it for now</h2>
-						<p class="fragment">next time</p>
-						<p class="fragment">advanced networking</p>
-						<p class="fragment">docker swarm maybe</p>
-						<p class="fragment">kubernetes maybe</p>
-						<p class="fragment">secrets management</p>
+						<lu>
+							<li>defines the complete infrastructure to swarm</li>
+							<li>scripted YAML file</li>
+							<li>different systems prod, test, dev, ...</li>
+						</lu>
+					</section>
+					<section>
+						<a href="https://github.com/dockersamples/example-voting-app">Docker Example Voting App</a>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## use a stack file
+							
+							```
+							#> docker stack deploy -c docker-stack.yml vote
+							```
+						</textarea>
 					</section>
 				</section>
 			</div>
