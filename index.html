@@ -78,7 +78,9 @@
 
 								```
 								#> docker port >CONTAINER-NAME<
-								#> docker inspect -f "{{ .NetworkSettings.Network.bridge.IPAddress }}" >CONTAINER-NAME<
+								#> docker inspect /
+									-f "{{ .NetworkSettings.Network.bridge.IPAddress }}" /
+									>CONTAINER-NAME<
 								```
 							</textarea>
 					</section>
@@ -232,7 +234,8 @@
 							
 							```
 							#> docker network create -d bridge bridge-name
-							#> docker container run -d --network bridge-name alpine sleep 1h
+							#> docker container run -d --network bridge-name /
+								alpine sleep 1h
 							```
 						</textarea>
 					</section>
